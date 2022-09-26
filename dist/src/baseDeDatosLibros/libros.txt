@@ -1,0 +1,4 @@
+nombre: 'EL VISITANTE',autor: 'KING, STEPHEN',paginas: 592,isbn: 9789877254174|
+nombre: 'EL INSTITUTO',autor: 'KING, STEPHEN',paginas: 624,isbn: 9789877254235|
+
+  
