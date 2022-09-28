@@ -76,8 +76,9 @@ export class RegistroAutomotor{
 const registro = new RegistroAutomotor()
 
 //Instanciamos Autos 
-const corollaRojo =new Automovil(0,'Toyota', 'Corolla', 'AD566HN', 0, 6000000)
-const etiosGris =new Automovil(1,'Toyota','Etios', 'JKL990', 0, 5000000)
+const corollaRojo =new Vehiculo(0,'Toyota', 'Corolla', 'AD566HN', 0, 6000000)
+const etiosGris =new Vehiculo(1,'Toyota','Etios', 'JKL990', 0, 5000000)
+const tornadoHonda =new Vehiculo(2,'Honda','Tornado 250cc', 'AA200DH', 0, 1200000)
 
 //Registrar los autos
 registro.darDeAltaAutomotor(corollaRojo)
