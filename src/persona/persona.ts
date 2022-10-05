@@ -1,4 +1,4 @@
-class Persona {
+class Personas {
 
     //propiedades
     nombre: string
@@ -21,7 +21,7 @@ class Persona {
 
 
 
-const persona1 = new Persona('Juan Jose', 'Alterd', 25, new Date('25/06/2000'))
+const persona1 = new Personas('Juan Jose', 'Alterd', 25, new Date('25/06/2000'))
 
 
 console.log(persona1.fullName())

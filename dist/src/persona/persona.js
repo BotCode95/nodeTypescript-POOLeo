@@ -1,5 +1,5 @@
 "use strict";
-class Persona {
+class Personas {
     //constructor 
     constructor(nombre, apellido, edad, fechaNacimiento) {
         this.nombre = nombre;
@@ -12,6 +12,6 @@ class Persona {
         return `El nombre completo de la persona es ${this.nombre} ${this.apellido}`;
     }
 }
-const persona1 = new Persona('Juan Jose', 'Alterd', 25, new Date('25/06/2000'));
+const persona1 = new Personas('Juan Jose', 'Alterd', 25, new Date('25/06/2000'));
 console.log(persona1.fullName());
 //# sourceMappingURL=persona.js.map
