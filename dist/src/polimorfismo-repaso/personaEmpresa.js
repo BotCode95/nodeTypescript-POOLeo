@@ -6,11 +6,12 @@ class PersonaEmp {
             this.apellido = apellido,
             this.edad = edad;
     }
-    mostrarDatos() {
-        console.log(`La persona ${this.nombre} ${this.apellido} tiene ${this.edad} años de edad `);
-    }
     edadPersona() {
-        console.log(`La edad de la persona es ${this.edad}`);
+        return `La edad de la persona es ${this.edad}`;
+    }
+    mostrarDatos() {
+        const edadPersona = this.edadPersona();
+        console.log(`La persona es ${this.nombre} ${this.apellido} y ${edadPersona} `);
     }
 }
 //extends = Heredar

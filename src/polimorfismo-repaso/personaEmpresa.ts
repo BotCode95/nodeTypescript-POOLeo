@@ -10,14 +10,15 @@ class PersonaEmp {
     this.apellido = apellido,
     this.edad =edad
  }
-
+ private edadPersona():string{ 
+    return `La edad de la persona es ${this.edad}`
+ }
  public mostrarDatos():void {
-    console.log(`La persona ${this.nombre} ${this.apellido} tiene ${this.edad} años de edad `)
+    const edadPersona = this.edadPersona()
+    console.log(`La persona es ${this.nombre} ${this.apellido} y ${edadPersona} `)
  }
 
- private edadPersona():void{ 
-    console.log(`La edad de la persona es ${this.edad}`)
- }
+
 }
               //extends = Heredar
 class Empleado extends PersonaEmp {

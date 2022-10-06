@@ -35,6 +35,5 @@ const autoDeportivo = new AutoDeportivo('Toyota', 'Supra')
 
 autoDeportivo.acelerar()
 
-
 console.log(auto)
 console.log(autoDeportivo)
