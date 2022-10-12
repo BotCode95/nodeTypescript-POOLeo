@@ -7,48 +7,48 @@ class Animal {
     constructor(tipo: string, edad: number){
         this.tipo=tipo;
         this.edad= edad;
-        this.tipoComida = ""
+        this.tipoComida = "";
     }
 
 
     public comer():void {
-        this.tipoComida = ""
+        this.tipoComida = "";
     }
 }
 
 
 class Felino extends Animal{
     constructor(tipo: string, edad: number){
-        super(tipo,edad)
+        super(tipo,edad);
     }
 
     public comer():void {
-        this.tipoComida = 'carne'
+        this.tipoComida = 'carne';
     }
 
     public rugir() :void{
-        console.log('rugiendooo!')
+        console.log('rugiendooo!');
     }
 }
 
 
 class Pez extends Animal{
     constructor(tipo: string, edad: number){
-        super(tipo,edad)
+        super(tipo,edad);
     }
     comer():void {
-        this.tipoComida = 'insectos'
+        this.tipoComida = 'insectos';
     }
 }
 
-const felino = new Felino('León', 2)
+const felino = new Felino('León', 2);
 
-felino.comer()
-console.log(felino)
-felino.rugir()
-const pez = new Pez("Pejerrey", 0.3)
+felino.comer();
+console.log(felino);
+felino.rugir();
+const pez = new Pez("Pejerrey", 0.3);
 
-pez.comer()
+pez.comer();
 
 
-console.log(pez)
+console.log(pez);

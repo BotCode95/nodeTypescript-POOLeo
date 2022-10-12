@@ -20,7 +20,7 @@ class AutoDeportivo extends Auto {
 
 
     constructor(marca: string, modelo:string) {
-        super(marca, modelo)
+        super(marca, modelo);
     }
 
     public acelerar():void {
@@ -28,12 +28,12 @@ class AutoDeportivo extends Auto {
     }
 }
 
-const auto = new Auto('Fiat', '500')
+const auto = new Auto('Fiat', '500');
 
-auto.acelerar()
-const autoDeportivo = new AutoDeportivo('Toyota', 'Supra')
+auto.acelerar();
+const autoDeportivo = new AutoDeportivo('Toyota', 'Supra');
 
-autoDeportivo.acelerar()
+autoDeportivo.acelerar();
 
-console.log(auto)
-console.log(autoDeportivo)
+console.log(auto);
+console.log(autoDeportivo);

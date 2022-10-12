@@ -1,10 +1,10 @@
 "use strict";
 class PersonaEmp {
     constructor(id, nombre, apellido, edad) {
-        this.id = id,
-            this.nombre = nombre,
-            this.apellido = apellido,
-            this.edad = edad;
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.edad = edad;
     }
     edadPersona() {
         return `La edad de la persona es ${this.edad}`;
@@ -43,8 +43,8 @@ cliente11.mostrarDatos();
 class Empresa {
     constructor(razonSocial, fechaCreacion) {
         this.razonSocial = razonSocial;
-        this.fechaCreacion = fechaCreacion,
-            this.listadoClientes = [];
+        this.fechaCreacion = fechaCreacion;
+        this.listadoClientes = [];
         this.listadoEmpleados = [];
     }
     agregarCliente(nuevoCliente) {
