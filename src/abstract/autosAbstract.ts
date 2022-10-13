@@ -1,8 +1,10 @@
 
 abstract class AutoM {
-    nombreVehiculo: string;
-    constructor(nombreVehiculo: string) {
-        this.nombreVehiculo = nombreVehiculo;
+    modelo: string;
+    marca: string
+    constructor(modelo: string, marca: string) {
+        this.modelo = modelo;
+        this.marca = marca;
     }
     //metodo abstract
     abstract obtenerNombreVehiculo() : string;
@@ -11,17 +13,62 @@ abstract class AutoM {
 
 
 class AutoCiudad extends AutoM {
-
-    constructor(nombreVehiculo:string){
-        super(nombreVehiculo);
+    velocidad: number
+    constructor(modelo: string, marca: string){
+        super(modelo, marca);
+        this.velocidad = 0;
     }
 
     obtenerNombreVehiculo() {
-        return this.nombreVehiculo;
+        return `Modelo: ${this.modelo} de la Marca ${this.marca}`;
+    }
+
+    acelerar() {
+        this.velocidad += 10
     }
 }
 
-const autoCiudad = new AutoCiudad('Peugeot 208');
+class AutoDeportivos extends AutoM {
+    velocidad: number
+    constructor(modelo: string, marca: string){
+        super(modelo, marca);
+        this.velocidad = 0;
+    }
+
+    obtenerNombreVehiculo() {
+        return `Modelo: ${this.modelo} de la Marca ${this.marca}`;
+    }
+
+    acelerar() {
+        this.velocidad += 30
+    }
+}
+
+
+class Camioneta extends AutoM {
+    velocidad: number
+    constructor(modelo: string, marca: string){
+        super(modelo, marca);
+        this.velocidad = 0;
+    }
+
+    obtenerNombreVehiculo() {
+        return `Modelo: ${this.modelo} de la Marca ${this.marca}`;
+    }
+
+    acelerar() {
+        this.velocidad += 20
+    }
+}
+
+
+
+
+const autoCiudad = new AutoCiudad('208', 'Peugeot');
+const autoDeportivo2 = new AutoDeportivos('Supra', 'Toyota');
+const camioneta = new Camioneta('Hilux', 'Toyota');
 
 
 console.log(autoCiudad.obtenerNombreVehiculo());
+console.log(autoDeportivo2.obtenerNombreVehiculo());
+console.log(camioneta.obtenerNombreVehiculo());
