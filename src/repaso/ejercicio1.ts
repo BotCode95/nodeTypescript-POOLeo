@@ -21,9 +21,8 @@ class PistaDeAudio implements PistaAudio {
     
 }
 
-
 class AdminPîstasAudio {
-    listaReproduccion: PistaAudio[]
+    private listaReproduccion: PistaAudio[]
 
     constructor(){
         this.listaReproduccion = []
@@ -44,7 +43,7 @@ class AdminPîstasAudio {
 
 
 const cancion1 = new PistaDeAudio(1, 'Un poco de amor fránces', '3:32', 'Patricio Rey y sus redonditos de ricota')
-const cancion2 = new PistaDeAudio(1, 'Algo mejor que hacer', '4:25', 'Cuarteto de nos')
+const cancion2 = new PistaDeAudio(2, 'Algo mejor que hacer', '4:25', 'Cuarteto de nos')
 const administradorPistas = new AdminPîstasAudio()
 
 

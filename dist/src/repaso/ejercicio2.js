@@ -50,11 +50,11 @@ class Cuenta {
 }
 const item = new Item('Producto 1', 500);
 const item2 = new Item('Producto 2', 600);
-console.log(item.equals(item2));
-console.log(item.getCosto());
-console.log(item.getDescripcion());
+console.log("Se verifica si los items son iguales", item.equals(item2));
+console.log("Precio del item:", item.getCosto());
+console.log("Descripcion de item: ", item.getDescripcion());
 item.setCosto(700);
-console.log(item.getCosto());
+console.log("Precio del item: ", item.getCosto());
 item.setDescripcion('Producto 3');
-console.log(item.getDescripcion());
+console.log("Descripcion de item: ", item.getDescripcion());
 //# sourceMappingURL=ejercicio2.js.map
