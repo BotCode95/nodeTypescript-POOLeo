@@ -12,13 +12,14 @@ class AdminPîstasAudio {
         this.listaReproduccion = [];
     }
     informacion(pistas) {
-        const pistasArray = pistas.map(pista => {
-            return { cancion: pista.titulo, duracion: pista.duracion };
-        });
-        console.log({
-            cantidadDePistas: pistas.length,
-            pistasArray
-        });
+        //Cuantas canciones hay en el array
+        console.log("Cantidad de canciones: ", pistas.length);
+        //Duracion total de cancion
+        let duracionCanciones = [];
+        for (let i = 0; i < pistas.length; i++) {
+            duracionCanciones.push(`duracion de la canción ${pistas[i].titulo}: ${pistas[i].duracion}`);
+        }
+        console.log(duracionCanciones);
     }
 }
 const cancion1 = new PistaDeAudio(1, 'Un poco de amor fránces', '3:32', 'Patricio Rey y sus redonditos de ricota');
