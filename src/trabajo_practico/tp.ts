@@ -170,8 +170,6 @@ pregunta1.getPuntaje()
 //Rendicion Examen
 rendicionExamen.estaAprobado()
 rendicionExamen.getExamen()
-
-
 rendicionExamen.getExamen()
 
 
