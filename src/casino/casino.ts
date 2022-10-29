@@ -1,15 +1,13 @@
 interface ITragamonedas{
     //propiedades o variables internadas
     nombreDeJuego: string;
-    premioMaximo : number;
     probabilidadDeGanar: number;
     apuestas: number[];
     valorDeApuesta: number
     jugadorTiradas: Tirada[]
-    cantidadDePosibilidades: number
+    cantidadDeTiradas: number
     //metodos a ejecutar
     getNombre():string
-    setPremioMaximo(premioMaximo: number):void
 }
 
 interface Tirada {
@@ -20,21 +18,19 @@ interface Tirada {
 
 class Tragamonedas implements ITragamonedas{
     nombreDeJuego: string;
-    premioMaximo: number;
     probabilidadDeGanar: number;
     apuestas: number[]
     valorDeApuesta: number;
     jugadorTiradas: Tirada[] 
-    cantidadDePosibilidades: number
+    cantidadDeTiradas: number
 
     constructor(nombreDeJuego: string, probabilidadDeGanar: number, apuestas: number[]){
         this.nombreDeJuego = nombreDeJuego;
         this.probabilidadDeGanar =  probabilidadDeGanar
         this.apuestas = apuestas
-        this.premioMaximo = 0;
         this.valorDeApuesta = 0;
         this.jugadorTiradas = []
-        this.cantidadDePosibilidades = 0
+        this.cantidadDeTiradas = 0
     }
 
     getNombre():string {
@@ -42,21 +38,21 @@ class Tragamonedas implements ITragamonedas{
     }
 
     getProbabilidadDeGanar():number{
-        return this.probabilidadDeGanar
+        return this.probabilidadDeGanar = Math.random()
     }
 
     getJugadorTiradas(): Tirada[] {
         return this.jugadorTiradas
     }
 
-    setPremioMaximo(premioMaximo: number):void{
-        this.premioMaximo = premioMaximo
-    }
-
     setValorDeApuesta(dineroDisponible: number, valorDeApuesta:number):void {
-        const cantidadDePosibilidades = dineroDisponible / valorDeApuesta
+        const verificarValorDeApuesta = this.apuestas.find(valor => valor === valorDeApuesta)
+        if(!verificarValorDeApuesta){
+            throw new Error('El valor de la apuesta no es correcto')
+        }
+        const cantidadDeTiradas = dineroDisponible / valorDeApuesta
         this.valorDeApuesta = valorDeApuesta
-        this.cantidadDePosibilidades = cantidadDePosibilidades
+        this.cantidadDeTiradas = cantidadDeTiradas
     }
 
     addJugadorTirada(tirada:Tirada):void{
@@ -67,9 +63,19 @@ class Tragamonedas implements ITragamonedas{
 //Juego 1
 class Tragamonedas1 extends Tragamonedas {
 
-
+    premioMaximo: number
     constructor(nombreDeJuego: string, probabilidadDeGanar: number, apuestas: number[]){
         super(nombreDeJuego, probabilidadDeGanar, apuestas)
+        this.premioMaximo = 0
+    }
+
+    setPremioMaximo(valorApuesta: number, ganoPremioMaximo: boolean):void{
+        if(ganoPremioMaximo === true  ) {
+            this.premioMaximo = 0
+        }else {
+            this.premioMaximo += (valorApuesta/2)
+
+        }
     }
 }
 
@@ -100,32 +106,73 @@ console.log(tragamoneda1.getNombre())
 //si el jugador gano en la tirada no sumar premioMaximo  queda igual
 //si gano el premio Maximo resetear el premioMaximo
 
-function getRandomInt(valorMaximo: number) {
+function getRandom(valorMaximo: number) {
     return Math.floor(Math.random() * valorMaximo);
 }
   
+const numeroPremioMaximo = getRandom(10) 
+for(let i=0; i< 100; i++){
 
-for(let i=0; i< tragamoneda1.cantidadDePosibilidades; i++){
+const numeroProbabilidad = tragamoneda1.getProbabilidadDeGanar()
+let numero1 = 0
+let numero2 = 0
+let numero3 = 0
 
-  const numeroElegido =tragamoneda1.getProbabilidadDeGanar() //5
-//   const numeroElegido =tragamoneda1.probabilidadDeGanar
-  const numeroSorteado = getRandomInt(10)
-  
-  console.log('El numero elegido es: ' + numeroElegido)
-  
-  console.log('El numero sorteado es: ' + numeroSorteado)
-  if (numeroElegido === numeroSorteado) {
-    tragamoneda1.addJugadorTirada({
-        perdio: 0,
-        gano: 50,
-        ganoPremioMaximo: false
-    })
+console.log('El premio maximo es de ', tragamoneda1.premioMaximo)
+    switch(true){
+        case (numeroProbabilidad < 0.2) :
+            numero1 = getRandom(10)
+            numero2 = getRandom(10)
+            numero3 = getRandom(10)
+            break; //freno del switch
+        case (numeroProbabilidad < 0.4) :
+            numero1 = getRandom(8)
+            numero2 = getRandom(8)
+            numero3 = getRandom(8)
+            break; //freno del switch
+        case (numeroProbabilidad < 0.6):
+            numero1 = getRandom(6)
+            numero2 = getRandom(6)
+            numero3 = getRandom(6)
+            break; //freno del switch
+        case (numeroProbabilidad < 0.8):
+            numero1 = getRandom(4)
+            numero2 = getRandom(4)
+            numero3 = getRandom(4)
+            break; //freno del switch
+        case (numeroProbabilidad < 0.99):
+            numero1 = getRandom(2)
+            numero2 = getRandom(2)
+            numero3 = getRandom(2)
+            break; //freno del switch
+        default:
+            numero1 = getRandom(1) 
+            numero2 = getRandom(1)
+            numero3 = getRandom(1)
+    }
+        //2         2           2           2
+  if (numero1 === numero2 && numero2 === numero3) { //que tambien gane con escalera por ejemplo 3,4,5
+    if(numero3 === numeroPremioMaximo){
+        tragamoneda1.addJugadorTirada({
+            perdio: 0,
+            gano: tragamoneda1.premioMaximo,
+            ganoPremioMaximo: true
+        })
+        tragamoneda1.setPremioMaximo(0, true)   
+    }else {
+        tragamoneda1.addJugadorTirada({
+            perdio: 0,
+            gano: tragamoneda1.valorDeApuesta * getRandom(10),
+            ganoPremioMaximo: false
+        })
+    }
   }else{
     tragamoneda1.addJugadorTirada({
-        perdio: 50,
+        perdio: tragamoneda1.valorDeApuesta,
         gano: 0,
         ganoPremioMaximo: false
-    })        
+    })     
+    tragamoneda1.setPremioMaximo(tragamoneda1.valorDeApuesta, false)   
   }
 }
   tragamoneda1.getJugadorTiradas()
