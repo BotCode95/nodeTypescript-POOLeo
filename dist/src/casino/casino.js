@@ -1,78 +1,14 @@
 "use strict";
-class Tragamonedas {
-    constructor(nombreDeJuego, probabilidadDeGanar, apuestas) {
-        this.nombreDeJuego = nombreDeJuego;
-        this.probabilidadDeGanar = probabilidadDeGanar;
-        this.apuestas = apuestas;
-        this.valorDeApuesta = 0;
-        this.jugadorTiradas = [];
-        this.cantidadDeTiradas = 0;
-    }
-    getNombre() {
-        return "El nombre del juego es: " + this.nombreDeJuego;
-    }
-    getProbabilidadDeGanar() {
-        return this.probabilidadDeGanar = Math.random();
-    }
-    getJugadorTiradas() {
-        return this.jugadorTiradas;
-    }
-    setValorDeApuesta(dineroDisponible, valorDeApuesta) {
-        const verificarValorDeApuesta = this.apuestas.find(valor => valor === valorDeApuesta);
-        if (!verificarValorDeApuesta) {
-            throw new Error('El valor de la apuesta no es correcto');
-        }
-        const cantidadDeTiradas = dineroDisponible / valorDeApuesta;
-        this.valorDeApuesta = valorDeApuesta;
-        this.cantidadDeTiradas = cantidadDeTiradas;
-    }
-    addJugadorTirada(tirada) {
-        var _a;
-        (_a = this.jugadorTiradas) === null || _a === void 0 ? void 0 : _a.push(tirada);
-    }
-}
-//Juego 1
-class Tragamonedas1 extends Tragamonedas {
-    constructor(nombreDeJuego, probabilidadDeGanar, apuestas) {
-        super(nombreDeJuego, probabilidadDeGanar, apuestas);
-        this.premioMaximo = 0;
-    }
-    setPremioMaximo(valorApuesta, ganoPremioMaximo) {
-        if (ganoPremioMaximo === true) {
-            this.premioMaximo = 0;
-        }
-        else {
-            this.premioMaximo += (valorApuesta / 2);
-        }
-    }
-}
-// Juego 2
-class Tragamonedas2 extends Tragamonedas {
-    constructor(nombreDeJuego, probabilidadDeGanar, apuestas) {
-        super(nombreDeJuego, probabilidadDeGanar, apuestas);
-    }
-}
-//Creamos maquina 1
-const tragamoneda1 = new Tragamonedas1('Juego de Dados', 5, [1, 2, 5, 10, 20, 50, 100]);
-//Creamos maquina 2
-const tragamoneda2 = new Tragamonedas2('Juego de Toros', 2, [50, 100, 500, 1000]);
-//Preguntamos al jugador cuanto dinero pone y que tipo de apuesta
-//100, 10 
-tragamoneda1.setValorDeApuesta(100, 10);
-console.log(tragamoneda1.getNombre());
-//primer tirada
-//si el jugador gano en la tirada no sumar premioMaximo  queda igual
-//si gano el premio Maximo resetear el premioMaximo
-function getRandom(valorMaximo) {
-    return Math.floor(Math.random() * valorMaximo);
-}
-const numeroPremioMaximo = getRandom(10);
-for (let i = 0; i < 100; i++) {
-    const numeroProbabilidad = tragamoneda1.getProbabilidadDeGanar();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const obtenerNumeros = (numeroProbabilidad) => {
     let numero1 = 0;
     let numero2 = 0;
     let numero3 = 0;
-    console.log('El premio maximo es de ', tragamoneda1.premioMaximo);
     switch (true) {
         case (numeroProbabilidad < 0.2):
             numero1 = getRandom(10);
@@ -104,33 +40,165 @@ for (let i = 0; i < 100; i++) {
             numero2 = getRandom(1);
             numero3 = getRandom(1);
     }
-    //2         2           2           2
-    if (numero1 === numero2 && numero2 === numero3) { //que tambien gane con escalera por ejemplo 3,4,5
-        if (numero3 === numeroPremioMaximo) {
-            tragamoneda1.addJugadorTirada({
-                perdio: 0,
-                gano: tragamoneda1.premioMaximo,
-                ganoPremioMaximo: true
-            });
-            tragamoneda1.setPremioMaximo(0, true);
-        }
-        else {
-            tragamoneda1.addJugadorTirada({
-                perdio: 0,
-                gano: tragamoneda1.valorDeApuesta * getRandom(10),
-                ganoPremioMaximo: false
-            });
-        }
+    return [numero1, numero2, numero3];
+};
+class Tragamonedas {
+    constructor(tematica, apuestas) {
+        this.tematica = tematica;
+        this.apuestas = apuestas;
+        this.probabilidadDeGanar = 0;
+        this.valorDeApuesta = 0;
+        this.jugadorTiradas = [];
+        this.cantidadDeTiradas = 0;
     }
-    else {
-        tragamoneda1.addJugadorTirada({
-            perdio: tragamoneda1.valorDeApuesta,
-            gano: 0,
-            ganoPremioMaximo: false
-        });
-        tragamoneda1.setPremioMaximo(tragamoneda1.valorDeApuesta, false);
+    getNombre() {
+        console.log("El nombre de la tematica es: " + this.tematica);
+        return "El nombre de la tematica es: " + this.tematica;
+    }
+    getProbabilidadDeGanar() {
+        return this.probabilidadDeGanar = Math.random();
+    }
+    getJugadorTiradas() {
+        return this.jugadorTiradas;
+    }
+    realizarApuesta(dineroDisponible, valorDeApuesta) {
+        const verificarValorDeApuesta = this.apuestas.find(valor => valor === valorDeApuesta);
+        if (!verificarValorDeApuesta) {
+            throw new Error('El valor de la apuesta no es correcto');
+        }
+        const cantidadDeTiradas = dineroDisponible / valorDeApuesta;
+        this.valorDeApuesta = valorDeApuesta;
+        this.cantidadDeTiradas = cantidadDeTiradas;
+    }
+    addJugadorTirada(tirada) {
+        var _a;
+        (_a = this.jugadorTiradas) === null || _a === void 0 ? void 0 : _a.push(tirada);
+    }
+    getResultados() {
+        //obtendriamos el resultados de todas las tiradas
+        //guardariamos en un archivo de texto segun el juego
+        //juego1.txt sino juego2.txt
+        //para poder leer los datos en el archivo necesitamos pasar el json a string
+        //Crear un json  y
+        // fs.appendFile('juegodados.txt', resultadoFinal.toString(), (err) => {
+        //     if(err) throw err
+        //     console.log('el archivo se creo exitosamente')
+        // } )
     }
 }
-tragamoneda1.getJugadorTiradas();
-console.log(tragamoneda1.jugadorTiradas);
+//Juego 1
+class Tragamonedas1 extends Tragamonedas {
+    constructor(nombreDeJuego, apuestas) {
+        super(nombreDeJuego, apuestas);
+        this.premioMaximo = 0;
+    }
+    setPremioMaximo(valorApuesta, ganoPremioMaximo) {
+        if (ganoPremioMaximo === true) {
+            this.premioMaximo = 0;
+        }
+        else {
+            this.premioMaximo += (valorApuesta / 2);
+        }
+    }
+    ejecutarJuego() {
+        var _a;
+        this.getNombre();
+        this.realizarApuesta(100, 10);
+        const numeroPremioMaximo = getRandom(10);
+        let numeroDeTiradas = (_a = this.cantidadDeTiradas) !== null && _a !== void 0 ? _a : 0;
+        //  0 0 0 5  //4 numero es el numero de premio maximo
+        for (let i = 0; i < numeroDeTiradas; i++) {
+            const numeroProbabilidad = this.getProbabilidadDeGanar();
+            const numerosJuego = obtenerNumeros(numeroProbabilidad);
+            let numero1 = numerosJuego[0];
+            let numero2 = numerosJuego[1];
+            let numero3 = numerosJuego[2];
+            if (numero1 === numero2 && numero2 === numero3) { //que tambien gane con escalera por ejemplo 3,4,5
+                if (numero3 === numeroPremioMaximo) {
+                    this.addJugadorTirada({
+                        perdio: 0,
+                        gano: this.premioMaximo,
+                        ganoPremioMaximo: true
+                    });
+                    //reseteamosel premio maximo
+                    this.setPremioMaximo(0, true);
+                }
+                else {
+                    this.addJugadorTirada({
+                        perdio: 0,
+                        gano: this.valorDeApuesta * getRandom(10),
+                        ganoPremioMaximo: false
+                    });
+                }
+            }
+            else {
+                this.addJugadorTirada({
+                    perdio: this.valorDeApuesta,
+                    gano: 0,
+                    ganoPremioMaximo: false
+                });
+                this.setPremioMaximo(this.valorDeApuesta, false);
+            }
+        }
+        this.getJugadorTiradas();
+    }
+}
+// Juego 2
+class Tragamonedas2 extends Tragamonedas {
+    constructor(nombreDeJuego, apuestas) {
+        super(nombreDeJuego, apuestas);
+    }
+    ejecutarJuego() {
+        this.getNombre();
+        this.realizarApuesta(100, 10);
+        //TODO: Verificar que en algunos casos la prueba 1 daba cero
+        //  0 0 0 5  //4 numero es el numero de premio maximo
+        for (let i = 0; i < this.cantidadDeTiradas; i++) {
+            const numeroProbabilidad = this.getProbabilidadDeGanar();
+            const numerosJuego = obtenerNumeros(numeroProbabilidad);
+            let numero1 = numerosJuego[0];
+            let numero2 = numerosJuego[1];
+            let numero3 = numerosJuego[2];
+            if (numero1 === numero2 && numero2 === numero3 || (((numero1 + 1) === numero2) && ((numero2 + 1) === numero3))) { //que tambien gane con escalera por ejemplo 3,4,5
+                this.addJugadorTirada({
+                    perdio: 0,
+                    gano: this.valorDeApuesta * getRandom(10)
+                });
+            }
+            else {
+                this.addJugadorTirada({
+                    perdio: this.valorDeApuesta,
+                    gano: 0,
+                });
+            }
+        }
+        this.getJugadorTiradas();
+    }
+}
+// Leemos un archivo de texto
+// archivo
+// preguntamos el nombre de la tematica
+let archivoTexto = fs_1.default.readFileSync(path_1.default.join(__dirname, 'archivo.txt'), 'utf-8');
+const archivo = JSON.parse(archivoTexto);
+let tragamoneda1;
+let tragamoneda2;
+switch (archivo.tematica) {
+    case 'Juego de Dados':
+        //creamos maquina 1
+        tragamoneda1 = new Tragamonedas1(archivo.tematica, archivo.valorDeApuestas);
+        tragamoneda1.ejecutarJuego();
+        break;
+    case 'Juego de Toros':
+        //creamos maquina 2
+        tragamoneda2 = new Tragamonedas2(archivo.tematica, archivo.valorDeApuestas); //[50,100,500,1000]
+        tragamoneda2.ejecutarJuego();
+        break;
+    default:
+        throw new Error('El nombre del juego no existe');
+}
+function getRandom(valorMaximo) {
+    return Math.floor(Math.random() * valorMaximo);
+}
+//   console.log(tragamoneda1?.jugadorTiradas)
+console.log(tragamoneda2 === null || tragamoneda2 === void 0 ? void 0 : tragamoneda2.jugadorTiradas);
 //# sourceMappingURL=casino.js.map

@@ -1,11 +1,13 @@
+import fs from 'fs'
+import path from 'path'
 interface ITragamonedas{
     //propiedades o variables internadas
-    nombreDeJuego: string;
+    tematica: string;
     probabilidadDeGanar: number;
     apuestas: number[];
-    valorDeApuesta: number
-    jugadorTiradas: Tirada[]
-    cantidadDeTiradas: number
+    valorDeApuesta?: number
+    jugadorTiradas?: Tirada[]
+    cantidadDeTiradas?: number
     //metodos a ejecutar
     getNombre():string
 }
@@ -13,28 +15,69 @@ interface ITragamonedas{
 interface Tirada {
     perdio: number,
     gano: number,
-    ganoPremioMaximo: boolean
+    ganoPremioMaximo?: boolean
+}
+
+const obtenerNumeros = (numeroProbabilidad: number) => {     
+    let numero1 = 0
+    let numero2 = 0
+    let numero3 = 0
+
+    switch(true){
+        case (numeroProbabilidad! < 0.2) :
+            numero1 = getRandom(10)
+            numero2 = getRandom(10)
+            numero3 = getRandom(10)
+            break; //freno del switch
+        case (numeroProbabilidad! < 0.4) :
+            numero1 = getRandom(8)
+            numero2 = getRandom(8)
+            numero3 = getRandom(8)
+            break; //freno del switch
+        case (numeroProbabilidad! < 0.6):
+            numero1 = getRandom(6)
+            numero2 = getRandom(6)
+            numero3 = getRandom(6)
+            break; //freno del switch
+        case (numeroProbabilidad! < 0.8):
+            numero1 = getRandom(4)
+            numero2 = getRandom(4)
+            numero3 = getRandom(4)
+            break; //freno del switch
+        case (numeroProbabilidad! < 0.99):
+            numero1 = getRandom(2)
+            numero2 = getRandom(2)
+            numero3 = getRandom(2)
+            break; //freno del switch
+        default:
+            numero1 = getRandom(1) 
+            numero2 = getRandom(1)
+            numero3 = getRandom(1)
+    }
+
+    return [numero1,numero2,numero3]
 }
 
 class Tragamonedas implements ITragamonedas{
-    nombreDeJuego: string;
+    tematica: string;
     probabilidadDeGanar: number;
     apuestas: number[]
     valorDeApuesta: number;
     jugadorTiradas: Tirada[] 
     cantidadDeTiradas: number
 
-    constructor(nombreDeJuego: string, probabilidadDeGanar: number, apuestas: number[]){
-        this.nombreDeJuego = nombreDeJuego;
-        this.probabilidadDeGanar =  probabilidadDeGanar
+    constructor(tematica: string,  apuestas: number[]){
+        this.tematica = tematica;
         this.apuestas = apuestas
+        this.probabilidadDeGanar =  0
         this.valorDeApuesta = 0;
         this.jugadorTiradas = []
         this.cantidadDeTiradas = 0
     }
 
     getNombre():string {
-        return "El nombre del juego es: " + this.nombreDeJuego
+        console.log("El nombre de la tematica es: " + this.tematica)
+        return "El nombre de la tematica es: " + this.tematica
     }
 
     getProbabilidadDeGanar():number{
@@ -45,7 +88,7 @@ class Tragamonedas implements ITragamonedas{
         return this.jugadorTiradas
     }
 
-    setValorDeApuesta(dineroDisponible: number, valorDeApuesta:number):void {
+    realizarApuesta(dineroDisponible: number, valorDeApuesta:number):void {
         const verificarValorDeApuesta = this.apuestas.find(valor => valor === valorDeApuesta)
         if(!verificarValorDeApuesta){
             throw new Error('El valor de la apuesta no es correcto')
@@ -58,14 +101,26 @@ class Tragamonedas implements ITragamonedas{
     addJugadorTirada(tirada:Tirada):void{
         this.jugadorTiradas?.push(tirada)
     }
+
+    getResultados() {
+        //obtendriamos el resultados de todas las tiradas
+        //guardariamos en un archivo de texto segun el juego
+        //juego1.txt sino juego2.txt
+        //para poder leer los datos en el archivo necesitamos pasar el json a string
+        //Crear un json  y
+        // fs.appendFile('juegodados.txt', resultadoFinal.toString(), (err) => {
+        //     if(err) throw err
+        //     console.log('el archivo se creo exitosamente')
+        // } )
+    }
 }
 
 //Juego 1
 class Tragamonedas1 extends Tragamonedas {
 
     premioMaximo: number
-    constructor(nombreDeJuego: string, probabilidadDeGanar: number, apuestas: number[]){
-        super(nombreDeJuego, probabilidadDeGanar, apuestas)
+    constructor(nombreDeJuego: string, apuestas: number[]){
+        super(nombreDeJuego, apuestas)
         this.premioMaximo = 0
     }
 
@@ -77,105 +132,117 @@ class Tragamonedas1 extends Tragamonedas {
 
         }
     }
+
+    ejecutarJuego() {
+        this.getNombre()
+        this.realizarApuesta(100,10)
+
+        const numeroPremioMaximo = getRandom(10) 
+
+        let numeroDeTiradas = this.cantidadDeTiradas ?? 0
+        //  0 0 0 5  //4 numero es el numero de premio maximo
+        for(let i=0; i< numeroDeTiradas; i++){
+
+        const numeroProbabilidad = this.getProbabilidadDeGanar()
+        const numerosJuego = obtenerNumeros(numeroProbabilidad)
+        let numero1 = numerosJuego[0]
+        let numero2 = numerosJuego[1]
+        let numero3 = numerosJuego[2]       
+
+        if (numero1 === numero2 && numero2 === numero3 ) { //que tambien gane con escalera por ejemplo 3,4,5
+            if(numero3 === numeroPremioMaximo){
+                this.addJugadorTirada({
+                    perdio: 0,
+                    gano: this.premioMaximo,
+                    ganoPremioMaximo: true
+                })
+                //reseteamosel premio maximo
+                this.setPremioMaximo(0, true)   
+            }else {
+                this.addJugadorTirada({
+                    perdio: 0,
+                    gano: this.valorDeApuesta * getRandom(10),
+                    ganoPremioMaximo: false
+                })
+            }
+        }else{
+            this.addJugadorTirada({
+                perdio: this.valorDeApuesta,
+                gano: 0,
+                ganoPremioMaximo: false
+            })     
+            this.setPremioMaximo(this.valorDeApuesta, false)   
+        }
+        }
+        this.getJugadorTiradas()
+    }
 }
 
 // Juego 2
 
 class Tragamonedas2 extends Tragamonedas {
 
+    constructor(nombreDeJuego: string,  apuestas: number[]){
+        super(nombreDeJuego,  apuestas)
+    }
 
-    constructor(nombreDeJuego: string, probabilidadDeGanar: number, apuestas: number[]){
-        super(nombreDeJuego, probabilidadDeGanar, apuestas)
+    ejecutarJuego() {
+        this.getNombre()
+        this.realizarApuesta(100,10)
+            //TODO: Verificar que en algunos casos la prueba 1 daba cero
+        //  0 0 0 5  //4 numero es el numero de premio maximo
+        for(let i=0; i< this.cantidadDeTiradas; i++){
+
+        const numeroProbabilidad = this.getProbabilidadDeGanar()        
+        const numerosJuego = obtenerNumeros(numeroProbabilidad)
+        let numero1 = numerosJuego[0]
+        let numero2 = numerosJuego[1]
+        let numero3 = numerosJuego[2]
+        if (numero1 === numero2 && numero2 === numero3 || (((numero1 + 1) === numero2) &&( (numero2 + 1) === numero3))) { //que tambien gane con escalera por ejemplo 3,4,5
+                this.addJugadorTirada({
+                    perdio: 0,
+                    gano: this.valorDeApuesta * getRandom(10)
+                })
+        }else{
+            this.addJugadorTirada({
+                perdio: this.valorDeApuesta,
+                gano: 0,
+            })     
+        }
+        }
+        this.getJugadorTiradas()
     }
 }
 
-//Creamos maquina 1
-const tragamoneda1 = new Tragamonedas1('Juego de Dados', 5, [1,2,5,10,20,50,100])
-//Creamos maquina 2
-const tragamoneda2 = new Tragamonedas2('Juego de Toros', 2, [50,100,500,1000])
+// Leemos un archivo de texto
+// archivo
+// preguntamos el nombre de la tematica
+let archivoTexto: string = fs.readFileSync(path.join(__dirname, 'archivo.txt'), 'utf-8')
+const archivo = JSON.parse(archivoTexto)
 
-//Preguntamos al jugador cuanto dinero pone y que tipo de apuesta
+let tragamoneda1;
+let tragamoneda2;
+switch (archivo.tematica) {
+    case 'Juego de Dados':
+        //creamos maquina 1
+        tragamoneda1 = new Tragamonedas1(archivo.tematica, archivo.valorDeApuestas)
+        tragamoneda1.ejecutarJuego()
+        break;
+    case 'Juego de Toros':
+        //creamos maquina 2
+        tragamoneda2 = new Tragamonedas2(archivo.tematica,archivo.valorDeApuestas ) //[50,100,500,1000]
+        tragamoneda2.ejecutarJuego()
+        break;
+    default:
+        throw new Error('El nombre del juego no existe')
+}
 
-//100, 10 
-tragamoneda1.setValorDeApuesta(100,10)
 
-console.log(tragamoneda1.getNombre())
-
-//primer tirada
-
-//si el jugador gano en la tirada no sumar premioMaximo  queda igual
-//si gano el premio Maximo resetear el premioMaximo
 
 function getRandom(valorMaximo: number) {
     return Math.floor(Math.random() * valorMaximo);
 }
-  
-const numeroPremioMaximo = getRandom(10) 
-for(let i=0; i< 100; i++){
 
-const numeroProbabilidad = tragamoneda1.getProbabilidadDeGanar()
-let numero1 = 0
-let numero2 = 0
-let numero3 = 0
-
-console.log('El premio maximo es de ', tragamoneda1.premioMaximo)
-    switch(true){
-        case (numeroProbabilidad < 0.2) :
-            numero1 = getRandom(10)
-            numero2 = getRandom(10)
-            numero3 = getRandom(10)
-            break; //freno del switch
-        case (numeroProbabilidad < 0.4) :
-            numero1 = getRandom(8)
-            numero2 = getRandom(8)
-            numero3 = getRandom(8)
-            break; //freno del switch
-        case (numeroProbabilidad < 0.6):
-            numero1 = getRandom(6)
-            numero2 = getRandom(6)
-            numero3 = getRandom(6)
-            break; //freno del switch
-        case (numeroProbabilidad < 0.8):
-            numero1 = getRandom(4)
-            numero2 = getRandom(4)
-            numero3 = getRandom(4)
-            break; //freno del switch
-        case (numeroProbabilidad < 0.99):
-            numero1 = getRandom(2)
-            numero2 = getRandom(2)
-            numero3 = getRandom(2)
-            break; //freno del switch
-        default:
-            numero1 = getRandom(1) 
-            numero2 = getRandom(1)
-            numero3 = getRandom(1)
-    }
-        //2         2           2           2
-  if (numero1 === numero2 && numero2 === numero3) { //que tambien gane con escalera por ejemplo 3,4,5
-    if(numero3 === numeroPremioMaximo){
-        tragamoneda1.addJugadorTirada({
-            perdio: 0,
-            gano: tragamoneda1.premioMaximo,
-            ganoPremioMaximo: true
-        })
-        tragamoneda1.setPremioMaximo(0, true)   
-    }else {
-        tragamoneda1.addJugadorTirada({
-            perdio: 0,
-            gano: tragamoneda1.valorDeApuesta * getRandom(10),
-            ganoPremioMaximo: false
-        })
-    }
-  }else{
-    tragamoneda1.addJugadorTirada({
-        perdio: tragamoneda1.valorDeApuesta,
-        gano: 0,
-        ganoPremioMaximo: false
-    })     
-    tragamoneda1.setPremioMaximo(tragamoneda1.valorDeApuesta, false)   
-  }
-}
-  tragamoneda1.getJugadorTiradas()
-
-  console.log(tragamoneda1.jugadorTiradas)
+//   console.log(tragamoneda1?.jugadorTiradas)
+  console.log(tragamoneda2?.jugadorTiradas)
 
