@@ -1,4 +1,4 @@
 {
-    "tematica": "Juego de Toros",
+    "tematica": "Juego de Dados",
     "valorDeApuestas": [1,2,5,10,20,50,100]
 }

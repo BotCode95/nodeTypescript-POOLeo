@@ -24,27 +24,27 @@ const obtenerNumeros = (numeroProbabilidad: number) => {
     let numero3 = 0
 
     switch(true){
-        case (numeroProbabilidad! < 0.2) :
+        case (numeroProbabilidad < 0.2) :
             numero1 = getRandom(10)
             numero2 = getRandom(10)
             numero3 = getRandom(10)
             break; //freno del switch
-        case (numeroProbabilidad! < 0.4) :
+        case (numeroProbabilidad < 0.4) :
             numero1 = getRandom(8)
             numero2 = getRandom(8)
             numero3 = getRandom(8)
             break; //freno del switch
-        case (numeroProbabilidad! < 0.6):
+        case (numeroProbabilidad < 0.6):
             numero1 = getRandom(6)
             numero2 = getRandom(6)
             numero3 = getRandom(6)
             break; //freno del switch
-        case (numeroProbabilidad! < 0.8):
+        case (numeroProbabilidad < 0.8):
             numero1 = getRandom(4)
             numero2 = getRandom(4)
             numero3 = getRandom(4)
             break; //freno del switch
-        case (numeroProbabilidad! < 0.99):
+        case (numeroProbabilidad < 0.99):
             numero1 = getRandom(2)
             numero2 = getRandom(2)
             numero3 = getRandom(2)
@@ -104,14 +104,18 @@ class Tragamonedas implements ITragamonedas{
 
     getResultados() {
         //obtendriamos el resultados de todas las tiradas
-        //guardariamos en un archivo de texto segun el juego
-        //juego1.txt sino juego2.txt
-        //para poder leer los datos en el archivo necesitamos pasar el json a string
-        //Crear un json  y
-        // fs.appendFile('juegodados.txt', resultadoFinal.toString(), (err) => {
-        //     if(err) throw err
-        //     console.log('el archivo se creo exitosamente')
-        // } )
+        const resultados = this.getJugadorTiradas()
+        console.log(resultados)
+        const total = resultados.map(tirada => {
+            return tirada.gano - tirada.perdio
+        })
+        // [ -50, 100, -50, -50, -50, -50, -50, -50, -50, 100 ]
+        const resultadoFinal = total.reduce((a,b) =>a+b) // -200
+       
+        fs.appendFile(this.tematica + '.txt', "En el juego de "+  this.tematica  + " el resultado en dinero del jugador es de $" + resultadoFinal.toString() + "." + "\n" , (err) => {
+            if(err) throw err
+            console.log('el archivo se creo exitosamente')
+        } )
     }
 }
 
@@ -227,22 +231,20 @@ switch (archivo.tematica) {
         //creamos maquina 1
         tragamoneda1 = new Tragamonedas1(archivo.tematica, archivo.valorDeApuestas)
         tragamoneda1.ejecutarJuego()
+        tragamoneda1.getResultados()
         break;
     case 'Juego de Toros':
         //creamos maquina 2
         tragamoneda2 = new Tragamonedas2(archivo.tematica,archivo.valorDeApuestas ) //[50,100,500,1000]
         tragamoneda2.ejecutarJuego()
+        tragamoneda2.getResultados()
         break;
     default:
         throw new Error('El nombre del juego no existe')
 }
 
-
-
 function getRandom(valorMaximo: number) {
     return Math.floor(Math.random() * valorMaximo);
 }
 
-//   console.log(tragamoneda1?.jugadorTiradas)
-  console.log(tragamoneda2?.jugadorTiradas)
 

@@ -76,14 +76,18 @@ class Tragamonedas {
     }
     getResultados() {
         //obtendriamos el resultados de todas las tiradas
-        //guardariamos en un archivo de texto segun el juego
-        //juego1.txt sino juego2.txt
-        //para poder leer los datos en el archivo necesitamos pasar el json a string
-        //Crear un json  y
-        // fs.appendFile('juegodados.txt', resultadoFinal.toString(), (err) => {
-        //     if(err) throw err
-        //     console.log('el archivo se creo exitosamente')
-        // } )
+        const resultados = this.getJugadorTiradas();
+        console.log(resultados);
+        const total = resultados.map(tirada => {
+            return tirada.gano - tirada.perdio;
+        });
+        // [ -50, 100, -50, -50, -50, -50, -50, -50, -50, 100 ]
+        const resultadoFinal = total.reduce((a, b) => a + b); // -200
+        fs_1.default.appendFile(this.tematica + '.txt', "En el juego de " + this.tematica + " el resultado en dinero del jugador es de $" + resultadoFinal.toString() + "." + "\n", (err) => {
+            if (err)
+                throw err;
+            console.log('el archivo se creo exitosamente');
+        });
     }
 }
 //Juego 1
@@ -187,11 +191,13 @@ switch (archivo.tematica) {
         //creamos maquina 1
         tragamoneda1 = new Tragamonedas1(archivo.tematica, archivo.valorDeApuestas);
         tragamoneda1.ejecutarJuego();
+        tragamoneda1.getResultados();
         break;
     case 'Juego de Toros':
         //creamos maquina 2
         tragamoneda2 = new Tragamonedas2(archivo.tematica, archivo.valorDeApuestas); //[50,100,500,1000]
         tragamoneda2.ejecutarJuego();
+        tragamoneda2.getResultados();
         break;
     default:
         throw new Error('El nombre del juego no existe');
@@ -199,6 +205,4 @@ switch (archivo.tematica) {
 function getRandom(valorMaximo) {
     return Math.floor(Math.random() * valorMaximo);
 }
-//   console.log(tragamoneda1?.jugadorTiradas)
-console.log(tragamoneda2 === null || tragamoneda2 === void 0 ? void 0 : tragamoneda2.jugadorTiradas);
 //# sourceMappingURL=casino.js.map
