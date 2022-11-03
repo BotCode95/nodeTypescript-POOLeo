@@ -10,6 +10,11 @@ interface ITragamonedas{
     cantidadDeTiradas?: number
     //metodos a ejecutar
     getNombre():string
+    getProbabilidadDeGanar():number
+    getJugadorTiradas(): Tirada[]
+    realizarApuesta(dineroDisponible: number, valorDeApuesta:number):void
+    addJugadorTirada(tirada:Tirada):void
+    getResultados():void 
 }
 
 interface Tirada {
