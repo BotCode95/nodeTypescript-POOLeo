@@ -104,10 +104,10 @@ class Tragamonedas1 extends Tragamonedas {
             this.premioMaximo += (valorApuesta / 2);
         }
     }
-    ejecutarJuego() {
+    ejecutarJuego(dineroDisponible, valorDeApuesta) {
         var _a;
         this.getNombre();
-        this.realizarApuesta(100, 10);
+        this.realizarApuesta(dineroDisponible, valorDeApuesta);
         const numeroPremioMaximo = getRandom(10);
         let numeroDeTiradas = (_a = this.cantidadDeTiradas) !== null && _a !== void 0 ? _a : 0;
         //  0 0 0 5  //4 numero es el numero de premio maximo
@@ -152,9 +152,9 @@ class Tragamonedas2 extends Tragamonedas {
     constructor(nombreDeJuego, apuestas) {
         super(nombreDeJuego, apuestas);
     }
-    ejecutarJuego() {
+    ejecutarJuego(dineroDisponible, valorDeApuesta) {
         this.getNombre();
-        this.realizarApuesta(100, 10);
+        this.realizarApuesta(dineroDisponible, valorDeApuesta);
         //TODO: Verificar que en algunos casos la prueba 1 daba cero
         //  0 0 0 5  //4 numero es el numero de premio maximo
         for (let i = 0; i < this.cantidadDeTiradas; i++) {
@@ -189,14 +189,14 @@ let tragamoneda2;
 switch (archivo.tematica) {
     case 'Juego de Dados':
         //creamos maquina 1
-        tragamoneda1 = new Tragamonedas1(archivo.tematica, archivo.valorDeApuestas);
-        tragamoneda1.ejecutarJuego();
+        tragamoneda1 = new Tragamonedas1(archivo.tematica, [1, 2, 5, 10, 20, 50, 100]);
+        tragamoneda1.ejecutarJuego(archivo.dineroDisponible, archivo.valorDeApuesta);
         tragamoneda1.getResultados();
         break;
     case 'Juego de Toros':
         //creamos maquina 2
-        tragamoneda2 = new Tragamonedas2(archivo.tematica, archivo.valorDeApuestas); //[50,100,500,1000]
-        tragamoneda2.ejecutarJuego();
+        tragamoneda2 = new Tragamonedas2(archivo.tematica, [50, 100, 500, 1000]);
+        tragamoneda2.ejecutarJuego(archivo.dineroDisponible, archivo.valorDeApuesta);
         tragamoneda2.getResultados();
         break;
     default:
